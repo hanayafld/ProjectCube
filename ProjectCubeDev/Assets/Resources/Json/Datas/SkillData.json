@@ -1,0 +1,23 @@
+﻿[
+  {
+    "id": "0",
+    "skillName": "휠윈드",
+    "skillType": "0",
+    "effectPrefabId": "5000",
+    "explain": "360도 회전하여 주위의 적들에게 3회 타격을 입힌다."
+  },
+  {
+    "id": "1",
+    "skillName": "연속공격",
+    "skillType": "0",
+    "effectPrefabId": "5001",
+    "explain": "2회 연속 공격한다."
+  },
+  {
+    "id": "2",
+    "skillName": "몸통박치기",
+    "skillType": "0",
+    "effectPrefabId": "5002",
+    "explain": "전방을 향해 돌진하여 경로상의 적에게 데미지를 준다."
+  }
+]
