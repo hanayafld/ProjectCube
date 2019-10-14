@@ -1,0 +1,12 @@
+﻿[
+  {
+    "id": "0",
+    "groupId": "0",
+    "attackDamage": "100",
+    "spellDamage": "100",
+    "hp": "100",
+    "maxHp": "100",
+    "listSkill": "",
+    "prefabId": "3"
+  }
+]
