@@ -33,7 +33,6 @@ public class CubeMove : MonoBehaviour
                 {
                     if (this.cube.sensors[0].isMove)
                     {
-                        this.SensorReset();
                         this.cube.isMoveWait = false;
                         StartCoroutine(this.Move("z", 1));
                         this.cube.moveCount++;
@@ -43,7 +42,6 @@ public class CubeMove : MonoBehaviour
                 {
                     if (this.cube.sensors[1].isMove)
                     {
-                        this.SensorReset();
                         this.cube.isMoveWait = false;
                         StartCoroutine(this.Move("z", -1));
                         this.cube.moveCount++;
@@ -53,7 +51,6 @@ public class CubeMove : MonoBehaviour
                 {
                     if (this.cube.sensors[2].isMove)
                     {
-                        this.SensorReset();
                         this.cube.isMoveWait = false;
                         StartCoroutine(this.Move("x", -1));
                         this.cube.moveCount++;
@@ -63,27 +60,17 @@ public class CubeMove : MonoBehaviour
                 {
                     if (this.cube.sensors[3].isMove)
                     {
-                        this.SensorReset();
                         this.cube.isMoveWait = false;
                         StartCoroutine(this.Move("x", 1));
                         this.cube.moveCount++;
                     }
                 }
+
             }
             yield return null;
         }
     }
 
-    //센서가 벽에 만났을때 연달아 다음 벽이있을때를 위한 센서 초기화 메서드
-    private void SensorReset()
-    {
-        for(int i=0;i<4;i++)
-        {
-            this.cube.sensors[i].isMove = true;
-        }
-    }
-
-    #region 큐브 이동 자연스럽게
     private IEnumerator Move(string shaft, int dir)//shaft = 축(x, y, z), dir = 방향 (-1, 1)
     {
         for (int i = 0; i < 30 / this.gameSpeed; i++)//돌면서 y값 위로
@@ -138,5 +125,4 @@ public class CubeMove : MonoBehaviour
     {
         this.body.transform.position += new Vector3(0, 0.007f * dir * this.gameSpeed, 0);
     }
-    #endregion
 }
