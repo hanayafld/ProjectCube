@@ -35,6 +35,7 @@ public class CubeMove : MonoBehaviour
                     {
                         this.cube.isMoveWait = false;
                         StartCoroutine(this.Move("z", 1));
+                        this.MoveReset();
                         this.cube.moveCount++;
                     }
                 }
@@ -44,6 +45,7 @@ public class CubeMove : MonoBehaviour
                     {
                         this.cube.isMoveWait = false;
                         StartCoroutine(this.Move("z", -1));
+                        this.MoveReset();
                         this.cube.moveCount++;
                     }
                 }
@@ -53,6 +55,7 @@ public class CubeMove : MonoBehaviour
                     {
                         this.cube.isMoveWait = false;
                         StartCoroutine(this.Move("x", -1));
+                        this.MoveReset();
                         this.cube.moveCount++;
                     }
                 }
@@ -62,15 +65,24 @@ public class CubeMove : MonoBehaviour
                     {
                         this.cube.isMoveWait = false;
                         StartCoroutine(this.Move("x", 1));
+                        this.MoveReset();
                         this.cube.moveCount++;
                     }
                 }
-
             }
             yield return null;
         }
     }
 
+    private void MoveReset()//연달은 벽 통과할때 생기는 OnTriggerExit오류 방지 메서드
+    {
+        for(int i = 0;i<4;i++)
+        {
+            this.cube.sensors[i].isMove = true;
+        }
+    }
+
+    #region 큐브 이동 자연스럽게
     private IEnumerator Move(string shaft, int dir)//shaft = 축(x, y, z), dir = 방향 (-1, 1)
     {
         for (int i = 0; i < 30 / this.gameSpeed; i++)//돌면서 y값 위로
@@ -125,4 +137,5 @@ public class CubeMove : MonoBehaviour
     {
         this.body.transform.position += new Vector3(0, 0.007f * dir * this.gameSpeed, 0);
     }
+    #endregion
 }

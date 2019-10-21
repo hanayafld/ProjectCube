@@ -14,12 +14,4 @@ public class Sensor : MonoBehaviour
             this.isMove = false;
         }
     }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "Wall")
-        {
-            this.isMove = true;
-        }
-    }
 }
