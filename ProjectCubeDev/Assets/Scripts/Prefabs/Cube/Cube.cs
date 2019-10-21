@@ -16,6 +16,7 @@ public class Cube : MonoBehaviour
         this.cubeMove = GetComponent<CubeMove>();
     }
 
+    #region 특수 타일 감지
     private void OnTriggerEnter(Collider other)//큐브가 올라가는 순간 타일을 읽음
     {
         if (other.tag == "OutLine")
@@ -29,7 +30,9 @@ public class Cube : MonoBehaviour
 
         }
     }
+    #endregion
 
+    #region 특수 타일 효과 모음
     private IEnumerator Fall()
     {
         yield return new WaitForSeconds(0.25f);
@@ -41,4 +44,5 @@ public class Cube : MonoBehaviour
             yield return null;
         }
     }
+    #endregion
 }
