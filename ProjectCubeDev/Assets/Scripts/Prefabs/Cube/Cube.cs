@@ -50,21 +50,52 @@ public class Cube : MonoBehaviour
             Debug.Log("미끄러져유");
             StartCoroutine(this.TileSlide(other.transform.eulerAngles.y));
         }
+        else if(other.tag =="In")
+        {
+            Debug.Log("이동");
+            StartCoroutine(this.TileInOut(other.transform.Find("Tile(Out)").transform.position));
+        }
     }
     #endregion
 
     #region 특수 타일 효과 모음
     private IEnumerator Tile()
     {
-        yield return new WaitForSeconds(1f / cubeSpeed);
+        yield return new WaitForSeconds(1.5f / cubeSpeed);
+        this.isMoveWait = true;
+    }
+
+    private IEnumerator TileInOut(Vector3 tileOut)
+    {
+        yield return new WaitForSeconds(1.5f / cubeSpeed);
+
+        //내려감
+        Vector3 dir = new Vector3(0, 1, 0);
+        for (int i = 0; i < 30 / this.cubeSpeed; i++)
+        {
+            this.transform.position += 1 / 30f * -dir * this.cubeSpeed;
+            yield return null;
+        }
+
+        //이동
+        this.transform.position = tileOut;
+        yield return new WaitForSeconds(1.5f / cubeSpeed);
+
+        //올라옴
+        for (int i = 0; i < 30 / this.cubeSpeed; i++)
+        {
+            this.transform.position += 1 / 30f * dir * this.cubeSpeed;
+            yield return null;
+        }
+
         this.isMoveWait = true;
     }
 
     private IEnumerator TileSlide(float tileDir)//타일의 화살표 위치를 받음
     {
+        yield return new WaitForSeconds(1.5f / cubeSpeed);
         Debug.Log(tileDir);
         Vector3 dir = new Vector3(0, 0, 0);//큐브가 이동 할 방향
-        yield return new WaitForSeconds(1f / cubeSpeed);
 
         if (tileDir == 0)
         {
@@ -93,13 +124,11 @@ public class Cube : MonoBehaviour
             this.transform.position += 1 / 30f * dir * this.cubeSpeed;
             yield return null;
         }
-
-        this.isMoveWait = true;
     }
 
     private IEnumerator TileOutLine()
     {
-        yield return new WaitForSeconds(1f / cubeSpeed);
+        yield return new WaitForSeconds(1.5f / cubeSpeed);
 
         while (true)
         {
@@ -110,7 +139,7 @@ public class Cube : MonoBehaviour
 
     private IEnumerator TileRotate(int dir)
     {
-        yield return new WaitForSeconds(1f / cubeSpeed);
+        yield return new WaitForSeconds(1.5f / cubeSpeed);
 
         for (int i = 0; i < 45 / this.cubeSpeed; i++)
         {

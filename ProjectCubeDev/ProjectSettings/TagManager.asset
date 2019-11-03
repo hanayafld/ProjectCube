@@ -12,6 +12,7 @@ TagManager:
   - RotateRight
   - RotateLeft
   - Slide
+  - In
   layers:
   - Default
   - TransparentFX
