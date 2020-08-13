@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class UserInfo
 {
-    //User 진행상황 등
+    public int stageLevel;
 }

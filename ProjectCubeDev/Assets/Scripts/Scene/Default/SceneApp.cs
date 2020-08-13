@@ -5,14 +5,13 @@ using UnityEngine.UI;
 
 public class SceneApp : MonoBehaviour
 {
-    public Button btn;
-
     public void Start()
     {
         DontDestroyOnLoad(this);
-        this.btn.onClick.AddListener(() =>
-        {
-            GameSceneManager.GetInstance().LoadScene(2);
-        });
+
+        var dataManager = DataManager.GetInstance();
+        dataManager.LoadStageData();
+
+        GameSceneManager.GetInstance().LoadScene(2);
     }
 }

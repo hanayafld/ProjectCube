@@ -4,5 +4,8 @@ using UnityEngine;
 
 public class SceneLoading : MonoBehaviour
 {
-    //로딩씬구현부
+    public void Init()
+    {
+        Debug.Log("로딩씬 인잇");
+    }
 }

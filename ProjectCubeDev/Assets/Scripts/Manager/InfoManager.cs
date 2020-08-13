@@ -18,7 +18,7 @@ public class InfoManager
 
     public static InfoManager GetInstance()
     {
-        if(InfoManager.instance == null)
+        if (InfoManager.instance == null)
         {
             InfoManager.instance = new InfoManager();
         }
@@ -32,23 +32,36 @@ public class InfoManager
         this.LoadInfoImpl();
     }
 
+    //이부분 갈아엎어야함
     private void LoadInfoImpl()
     {
         var checkDirectory = Directory.Exists(Application.persistentDataPath + path);
 
         //신규유저
-        if(checkDirectory == false)
+        if (checkDirectory == false)
         {
             Debug.Log("신규");
             Directory.CreateDirectory(Application.persistentDataPath + path);
             this.SetNewUserInfo();
+            this.SaveUserInfo(false);
         }
         //기존유저
-        if(checkDirectory)
+        if (checkDirectory)
         {
-            Debug.Log("기존");
-            var text = File.ReadAllText(Application.persistentDataPath + path + "/userInfo.json");
-            this.userInfo = JsonConvert.DeserializeObject<UserInfo>(text);
+            var checkInfo = File.Exists(Application.persistentDataPath + path + "/userInfo.json");
+            if (checkInfo)
+            {
+                Debug.Log("기존");
+                Debug.Log(Application.persistentDataPath + path + "/userInfo.json");
+                var text = File.ReadAllText(Application.persistentDataPath + path + "/userInfo.json");
+                this.userInfo = JsonConvert.DeserializeObject<UserInfo>(text);
+            }
+            else
+            {
+                Debug.Log("신규");
+                this.SetNewUserInfo();
+                this.SaveUserInfo(false);
+            }
         }
     }
     #endregion
@@ -58,6 +71,7 @@ public class InfoManager
     {
         this.userInfo = new UserInfo();
         //새로하기 선택시 세팅값 설정
+        this.userInfo.stageLevel = 1;
     }
     #endregion
 
@@ -69,18 +83,16 @@ public class InfoManager
     #endregion
 
     #region 유저인포 저장
-    public void SaveUserInfo()
+    public void SaveUserInfo(bool isLevelUp)
     {
+        if (isLevelUp)
+        {
+            Debug.Log("레벨업!");
+            this.userInfo.stageLevel++;
+        }
         var json = JsonConvert.SerializeObject(this.userInfo);
         File.WriteAllText(Application.persistentDataPath + path + "/userInfo.json", json, System.Text.Encoding.UTF8);
-    }
-    #endregion
-
-    #region 인포 업데이트
-    //인포업데이트
-    public void UpdateUserInfo()
-    {
-        
+        Debug.Log("Info저장 완료");
     }
     #endregion
 }

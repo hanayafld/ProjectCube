@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class PanelGoal : MonoBehaviour
 {
+    public System.Action onGameClear;
+
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Goal")
         {
-            Debug.Log("클리어!");
+            this.onGameClear();
         }
     }
 }

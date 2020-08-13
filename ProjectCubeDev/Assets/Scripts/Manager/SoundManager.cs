@@ -26,7 +26,7 @@ public class SoundManager : RawManager
     }
 
     #region 데이터 로드
-    public override void LoadAllData()
+    public override void LoadStageData()
     {
 
     }

@@ -5,39 +5,59 @@ using UnityEngine.UI;
 
 public class SceneTitle : MonoBehaviour
 {
-    public Button btnNew;
-    public Button btnLoad;
-    public Button btnOption;
-    public Button btnQuit;
+    //public Button btnStart;
+    public Sprite[] spriteBtnBlues;
+    public Sprite[] spriteBtnOffs;
+    public Sprite[] spriteBtnReds;
+
+    public Button[] btnStages;
 
     public void Init(string name = "", int prefabId = 0)
     {
-        var dm = DataManager.GetInstance();
-        dm.LoadAllData();
-        var im = InfoManager.GetInstance();
-        im.LoadInfo();
 
-        Debug.Log("title 이닛됨");
-        this.btnNew.onClick.AddListener(() =>
-        {
-            //새로하기
-            GameSceneManager.GetInstance().LoadScene(4);
-        });
+        /*var dataManager = DataManager.GetInstance();
+        dataManager.LoadAllData();*///아직은 데이터 필요없음
 
-        this.btnLoad.onClick.AddListener(() =>
-        {
-            //이어하기
-            GameSceneManager.GetInstance().LoadScene(4);
-        });
+        #region Info
+        var infoManager = InfoManager.GetInstance();
+        infoManager.LoadInfo();
+        var userInfo = infoManager.GetUserInfo();
+        var userStageLevel = userInfo.stageLevel;
+        #endregion
+        
+        this.SetBtnStage(userStageLevel);
 
-        this.btnOption.onClick.AddListener(() =>
+        for (int i = 0; i < this.btnStages.Length; i++)
         {
-            //옵션설정 팝업창 띄우기
-        });
+            int btnIndex = i;
+            btnStages[btnIndex].onClick.AddListener(() => this.LoadStageScene(btnIndex));
+        }
+    }
 
-        this.btnQuit.onClick.AddListener(() =>
+    private void LoadStageScene(int stageId)
+    {
+        GameSceneManager.GetInstance().LoadScene(4, stageId);
+    }
+
+    private void SetBtnStage(int userStageLevel)
+    {
+        var stageLevel = userStageLevel - 1;
+        for (int i = 0; i < this.btnStages.Length; i++)
         {
-            //게임종료하시겠습니까? 팝업창 띄우기
-        });
+            if (i == stageLevel)
+            {
+                this.btnStages[i].GetComponent<Image>().sprite = this.spriteBtnReds[i];
+                this.btnStages[i].interactable = true;
+            }
+            else if (i < stageLevel)
+            {
+                this.btnStages[i].gameObject.GetComponent<Image>().sprite = this.spriteBtnBlues[i];
+                this.btnStages[i].interactable = true;
+            }
+            else
+            {
+                this.btnStages[i].interactable = false;
+            }
+        }
     }
 }

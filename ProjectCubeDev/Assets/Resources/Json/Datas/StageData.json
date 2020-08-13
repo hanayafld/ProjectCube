@@ -1,16 +1,52 @@
-﻿[
+[
+  {
+    "id": "0",
+    "stageLevel": "1",
+    "maxMove": "4",
+    "timeLimit": "30",
+    "cameraX": "8",
+    "cameraY": "20",
+    "cameraZ": "3",
+    "path": "Prefabs/Stages/Stage01"
+  },
   {
     "id": "1",
-    "monsterGroupId": "0",
-    "monsterPos": "",
-    "bossPos": "",
-    "startPos": {
-	"x": 0.0,
-	"y": 1.0,
-	"z": 1.0
-	},
-    "prefabId": "50000",
-    "rewardId": "",
-    "rewardValue": "",
+    "stageLevel": "2",
+    "maxMove": "4",
+    "timeLimit": "15",
+    "cameraX": "8",
+    "cameraY": "20",
+    "cameraZ": "2",
+    "path": "Prefabs/Stages/Stage02"
+  },
+  {
+    "id": "2",
+    "stageLevel": "3",
+    "maxMove": "12",
+    "timeLimit": "20",
+    "cameraX": "8",
+    "cameraY": "20",
+    "cameraZ": "1",
+    "path": "Prefabs/Stages/Stage03"
+  },
+  {
+    "id": "3",
+    "stageLevel": "4",
+    "maxMove": "2",
+    "timeLimit": "15",
+    "cameraX": "8",
+    "cameraY": "20",
+    "cameraZ": "3",
+    "path": "Prefabs/Stages/Stage04"
+  },
+  {
+    "id": "4",
+    "stageLevel": "5",
+    "maxMove": "8",
+    "timeLimit": "30",
+    "cameraX": "8",
+    "cameraY": "20",
+    "cameraZ": "2",
+    "path": "Prefabs/Stages/Stage05"
   }
 ]

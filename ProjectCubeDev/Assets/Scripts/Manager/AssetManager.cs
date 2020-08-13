@@ -26,7 +26,7 @@ public class AssetManager : RawManager
     }
 
     #region 데이터로드
-    public override void LoadAllData()
+    public override void LoadStageData()
     {
         this.LoadDataImpl<PrefabData>("경로");
     }

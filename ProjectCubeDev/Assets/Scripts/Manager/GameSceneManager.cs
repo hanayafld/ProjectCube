@@ -24,13 +24,14 @@ public class GameSceneManager
     }
 
     #region 로드씬
+    /*
     public void LoadAdditiveScene(int id, string caller = "", int prefabId = 0)
     {
         this.listBeforeScene.Add(SceneManager.GetActiveScene().name);
 
         var sceneName = ((SceneEnums.sceneName)id).ToString();
         var operation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-
+        
         operation.completed += (asyncOper) =>
         {
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
@@ -44,19 +45,21 @@ public class GameSceneManager
                 this.InitScene((SceneEnums.sceneName)id);
             }
         };
-    }
+    }*/
 
-    public void LoadScene(int id, int prefabId = 0)
+    public void LoadScene(int id, int stageLevel = 0)
     {
         this.listBeforeScene = new List<string>();
 
         var sceneName = ((SceneEnums.sceneName)id).ToString();
         var operation = SceneManager.LoadSceneAsync(sceneName);
 
+        Debug.LogFormat("불러온 씬 : {0}", sceneName);
+
         operation.completed += (asyncOper) =>
         {
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
-            this.InitScene((SceneEnums.sceneName)id, "", prefabId);
+            this.InitScene((SceneEnums.sceneName)id, "", stageLevel);
         };   
     }
     #endregion
@@ -85,7 +88,7 @@ public class GameSceneManager
     #region 씬초기화
     //Scene을 초기화하는 과정이므로 Init메서드는 Scene의 대표 오브젝트 스크립트에서 정의
     //caller는 LoadScene 메소드를 호출한 Scene을 뜻함
-    private void InitScene(SceneEnums.sceneName sceneName, string caller = "", int prefabId = 0)
+    private void InitScene(SceneEnums.sceneName sceneName, string caller = "", int stageLevel = 0)
     {
         switch(sceneName)
         {
@@ -101,10 +104,16 @@ public class GameSceneManager
                     go.Init();
                     break;
                 }
+            case SceneEnums.sceneName.Loading:
+                {
+                    var go = GameObject.FindObjectOfType<SceneLoading>();
+                    go.Init();
+                    break;
+                }
             case SceneEnums.sceneName.Stage:
                 {
                     var go = GameObject.FindObjectOfType<SceneStage>();
-                    go.InitStage(prefabId);
+                    go.InitStage(stageLevel);
                     break;
                 }
             default:

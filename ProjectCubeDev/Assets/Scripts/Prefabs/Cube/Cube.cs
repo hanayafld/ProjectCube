@@ -1,58 +1,70 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Cube : MonoBehaviour
 {
     [HideInInspector]
-    public bool isMoveWait = true;//이게 true면, 이동조작가능, false면 이동조작불가
-    public int moveCount;//이동횟수 알려줌
+    public bool isMoveWait = false;//이게 true면, 이동조작가능, false면 이동조작불가
     public Sensor[] sensors;// 센서들 순서대로 0~4, 위 아래 왼 오 바닥센서(납작한 박스콜라이더로 되어있음)
     public GameObject cubeBody;
+    public PanelGoal panelGoal;
 
     public int cubeSpeed = 1;
     private CubeMove cubeMove;
+    public System.Action onGameClear;
+    public System.Action onGameFailed;
+    public System.Action onMoveCount;//이동횟수 알려줌
 
     void Awake()
     {
         this.cubeMove = GetComponent<CubeMove>();
+        this.panelGoal.onGameClear = () =>
+        {
+            StartCoroutine(this.GameClear());
+        }; 
     }
 
     #region 특수 타일 감지
     private void OnTriggerEnter(Collider other)//큐브가 올라가는 순간 타일을 읽음
     {
-        if (other.tag == "Tile" || other.tag == "Goal")
+        if (other.tag == "Tile")
+        {
+            StartCoroutine(this.Tile());
+        }
+        else if (other.tag == "Goal")
         {
             StartCoroutine(this.Tile());
         }
         else if (other.tag == "OutLine")
         {
-            Debug.Log("떨어져유");
-            StartCoroutine(this.TileOutLine());
+            Debug.Log("OutLine");
+            this.onGameFailed();
         }
         else if (other.tag == "Trap")
         {
-            Debug.Log("함정이에유");
-
+            Debug.Log("Trap");
+            this.onGameFailed();
         }
         else if (other.tag == "RotateLeft")
         {
-            Debug.Log("왼 돌려유");
+            Debug.Log("RotateLeft");
             StartCoroutine(this.TileRotate(-1));
         }
         else if (other.tag == "RotateRight")
         {
-            Debug.Log("오 돌려유");
-            StartCoroutine(this.TileRotate(1));
+            Debug.Log("RotateRight");
+            StartCoroutine(this.TileRotate(1)); ;
         }
         else if (other.tag == "Slide")
         {
-            Debug.Log("미끄러져유");
+            Debug.Log("Slide");
             StartCoroutine(this.TileSlide(other.transform.eulerAngles.y));
         }
-        else if(other.tag =="In")
+        else if (other.tag == "In")
         {
-            Debug.Log("이동");
+            Debug.Log("In");
             StartCoroutine(this.TileInOut(other.transform.Find("Tile(Out)").transform.position));
         }
     }
@@ -122,17 +134,7 @@ public class Cube : MonoBehaviour
         for (int i = 0; i < 30 / this.cubeSpeed; i++)
         {
             this.transform.position += 1 / 30f * dir * this.cubeSpeed;
-            yield return null;
-        }
-    }
-
-    private IEnumerator TileOutLine()
-    {
-        yield return new WaitForSeconds(1.5f / cubeSpeed);
-
-        while (true)
-        {
-            this.transform.position += new Vector3(0, -0.1f, 0);
+            this.cubeMove.mainCamera.transform.position += 1 / 30f * dir * this.cubeSpeed;
             yield return null;
         }
     }
@@ -148,6 +150,27 @@ public class Cube : MonoBehaviour
         }
 
         this.isMoveWait = true;
+    }
+    #endregion
+    
+    #region 게임 클리어와 실패 시
+    private IEnumerator GameClear()
+    {
+        this.onGameClear();
+        yield return new WaitForSeconds(1.5f / cubeSpeed);
+
+        float pointA = this.transform.position.y;
+
+        while (true)
+        {
+            if (this.transform.position.y <= pointA - 1.1f)
+            {
+                break;
+            }
+            this.transform.Translate(new Vector3(0, -0.03f, 0));
+            yield return null;
+        }
+        yield return null;
     }
     #endregion
 }

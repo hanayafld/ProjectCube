@@ -10,7 +10,7 @@ public class RawManager
 
     #region 데이터 로드
     //path별로 각자 override해서 사용함
-    public virtual void LoadAllData()
+    public virtual void LoadStageData()
     {
 
     }
